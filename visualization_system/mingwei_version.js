@@ -21,42 +21,16 @@ import {  defaults as defaultControls,  OverviewMap,  LayerSwitcher, FullScreen}
 import * as d3 from 'd3';
 import * as utils from './utils';
 
-//import data
+//data
+// import clusterData from './geojson/mingwei_topics/im_cluster.geojson';
+// import clusterBoundaryData from './geojson/mingwei_topics/im_cluster_boundary.geojson';
+// import edgeyData from './geojson/mingwei_topics/im_edges.geojson';
+// import nodeData from './geojson/mingwei_topics/im_nodes.geojson';
 
-import clusterData from './geojson/mingwei_topics/im_cluster.geojson';
-import clusterBoundaryData from './geojson/mingwei_topics/im_cluster_boundary.geojson';
-import edgeyData from './geojson/mingwei_topics/im_edges.geojson';
-import nodeData from './geojson/mingwei_topics/im_nodes.geojson';
-
-
-
-
-
-
-// d3.json(nodeData).then(data=>{
-//   let canvas = document.createElement('canvas');
-//   let ctx = canvas.getContext('2d');
-//   ctx.textAlign = 'center';
-//   ctx.textBaseline = 'middle';
-//   //compute bbox
-//   data.features.forEach((d,i)=>{
-//     d.index = i;
-//     let p = d.properties;
-//     let [x,y] = d.geometry.coordinates;
-//     ctx.font = `${sl(+p.level)}px ${FONT}`;
-//     let m = ctx.measureText(p.label);
-//     let width = m.actualBoundingBoxRight + m.actualBoundingBoxLeft;
-//     let height = m.actualBoundingBoxDescent + m.actualBoundingBoxAscent;
-//     p.bbox = {
-//       x, y, width, height
-//     };
-//   });
-//   utils.markNonOverlapResolution(data.features);
-//   console.log(data.features);
-// });
-
-
-
+import clusterData from './geojson/mingwei-topics-refined/im_cluster.geojson';
+import clusterBoundaryData from './geojson/mingwei-topics-refined/im_cluster_boundary.geojson';
+import edgeyData from './geojson/mingwei-topics-refined/im_edges.geojson';
+import nodeData from './geojson/mingwei-topics-refined/im_nodes.geojson';
 
 
 let clusterStyleFunction = function(feature, resolution) {
@@ -88,12 +62,12 @@ let clusterBoundaryStyleFunction = function(feature, resolution) {
 
 
 let edgeStyleFunction = function(feature, resolution) {
-  let l = feature.get('level');
-  let c = feature.get("stroke");
+  let l = +feature.get('level');
+  // let c = feature.get('stroke');
   let edgeStyle = new Style({
     stroke: new Stroke({
       color: '#aaa',//c,
-      width: 0.3*(10-l),
+      width: 0.3*sl(l)/5,
     })
   });
   return edgeStyle;
@@ -102,6 +76,7 @@ let edgeStyleFunction = function(feature, resolution) {
 
 
 let nodeStyleFunction = function(feature, resolution) {
+  // console.log(feature.getGeometry());
   if (getVisible(feature, resolution)){
     return new Style({
       stroke: new Stroke({  
@@ -111,14 +86,7 @@ let nodeStyleFunction = function(feature, resolution) {
       fill: new Fill({
         color: 'rgba(255,255,255,0.5)'
       }),
-      text: createTextStyle(
-        feature.get("label"), 
-        feature.get("fontsize"), 
-        feature.get("level"), 
-        feature.get("height"),
-        feature.get("weight"),
-        resolution
-      )
+      text: createTextStyle(feature, resolution)
     });
   }else{
     return new Style({
@@ -126,11 +94,11 @@ let nodeStyleFunction = function(feature, resolution) {
       //   fill: new Fill({
       //     color: '#aaa'
       //   }),
-      //   // stroke: new Stroke({
-      //   //   color: '#3399CC',
-      //   //   width: 0
-      //   // }),
-      //   radius: 1
+        // stroke: new Stroke({
+        //   color: '#3399CC',
+        //   width: 0
+        // }),
+        // radius: sl(+feature.get('level'))/2
       // }),
     });
   }
@@ -182,18 +150,17 @@ let selectStyleFunctionForEdge=function(feature, resolution) {
 
 
 let getVisible = function(feature,resolution){
-  return feature.get('resolution') >= resolution;
+  return feature.get('resolution') > resolution;
 };
 
 
-let createTextStyle = function(label, fontsize, level, boxheight, weight, resolution) {
+let createTextStyle = function(feature, resolution) {
   // let remap = 2 + (8-level)*1.5/7;
   // let fsize =  5 * remap;
-  let fsize = sl(level);
 
   let nodetext = new Text({
-    font: fsize + 'px arial',  
-    text: label,
+    font: Math.round(sl(+feature.get('level'))) + `px ${FONT}`,  
+    text: feature.get('label'),
     fill: new Fill({
       color: 'rgba(72,79,90,1)'
     }),
@@ -210,10 +177,10 @@ let createTextStyle = function(label, fontsize, level, boxheight, weight, resolu
 
 
 const FONT = 'arial';
-const minResolution = 4;
-const maxResolution = 305;
-
-let sl = d3.scaleLinear().domain([1,8]).range([20,12]);
+const minResolution = 1.194328566955879 
+const maxResolution = 405.7481131407050;
+const maxLevel = 20;
+let sl = d3.scaleLinear().domain([1, maxLevel]).range([20,12]);
 
 let clusterSource = new Vector({  url: clusterData,  format: new GeoJSON() });
 let clusterLayer = new VectorLayer({  source: clusterSource,  style: clusterStyleFunction });
@@ -237,10 +204,14 @@ let nodeSource = new Vector({
     xhr.onload = function() {
       if (xhr.status == 200) {
         let features = nodeSource.getFormat().readFeatures(xhr.responseText);
+        // features.forEach(d=>d.set('label', d.get('label').slice(0,16)));
         utils.markBoundingBox(features, sl, FONT);
-        utils.markNonOverlapResolution(features, undefined, minResolution, maxResolution);
+        utils.markNonOverlapResolution(features, d3.range(0,maxLevel+1,2), minResolution, maxResolution);
         nodeSource.addFeatures(features);
         console.log(features);
+
+        let debug = new Set(['information visualization', 'computational geometry']);
+        console.log(features.filter(d=>debug.has(d.get('label'))));
       } else {
         onError();
       }
@@ -261,7 +232,7 @@ let map = new Map({
     // minResolution,
     // maxResolution,
     zoom: 11,
-    maxZoom: 15,
+    maxZoom: 17,
     minZoom: 9,
   })
 });
@@ -295,21 +266,32 @@ map.addInteraction(nodeSelectPointerMove);
 map.on('click', function(evt) {
   let element = popup.getElement();
   $(element).popover('destroy');
-  let feature = map.forEachFeatureAtPixel(evt.pixel,
-      function(feature, layer) {      return feature;  });
-      if (feature) {
-          let element = popup.getElement();
-        let geometry = feature.getGeometry();
-        let fid=feature.getId()
-        let ftype = feature.getGeometry().getType()
-        if ( fid &&  fid.search("cluster")>-1 ) return 0;
+  let feature = map.forEachFeatureAtPixel(
+    evt.pixel,
+    (feature, layer) => feature
+  );
+  if (feature) {
+    let element = popup.getElement();
+    let geometry = feature.getGeometry();
+    let fid = feature.getId();
+    let ftype = feature.getGeometry().getType()
+    if ( fid &&  fid.search("cluster") > -1 ){
+      return 0;
+    }
 
-        $(element)[0].title = feature.get('label')
-       let content =     feature.get('label') + " <br> Weight: " +  feature.get('weight') +"<br> Level: " + feature.get('level')  ;
+    $(element)[0].title = feature.get('label');
+    let content = feature.get('label') 
+    + " <br> Weight: " +  feature.get('weight') 
+    + "<br> Level: " + feature.get('level');
 
-        $(element).popover('destroy');
-        popup.setPosition(evt.coordinate);
-        $(element).popover({ placement: 'top',  animation: false,  html: true,  content: content,    });
-        $(element).popover('show');
+    $(element).popover('destroy');
+    popup.setPosition(evt.coordinate);
+    $(element).popover({
+      placement: 'top', 
+      animation: false, 
+      html: true, 
+      content: content,
+    });
+    $(element).popover('show');
   }
 });

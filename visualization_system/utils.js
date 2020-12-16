@@ -10,8 +10,11 @@ export function markNonOverlapResolution(features, levels=undefined, minResoluti
   let l0 = 0;
   for (let l of levels){
     console.log(l);
-    let nodes_l = features.filter(d=>l0 < +d.get('level') && +d.get('level') <= l);
-    let higher = features.filter(d=>+d.get('level') <= l0);
+    let nodes_l = features
+    .filter(d=>l0 < +d.get('level') && +d.get('level') <= l)
+    .sort((a,b)=>+a.get('level')-(+b.get('level')));
+    let higher = features.filter(d=>+d.get('level') <= l0)
+    .sort((a,b)=>+a.get('level')-(+b.get('level')));
     markScale(nodes_l, higher, features, minResolution, maxResolution);
     l0 = l;
   }
@@ -26,7 +29,8 @@ export function markBoundingBox(features, sl, font){
   //compute bbox
   features.forEach((d,i)=>{
     d.set('index', i);
-    let [x,y] = d.get('pos').split(',').map(d=>+d);
+    // let [x,y] = d.get('pos').split(',').map(d=>+d);
+    let [x,y] = d.values_.geometry.flatCoordinates;
     ctx.font = `${sl(+d.get('level'))}px ${font}`;
     let m = ctx.measureText(d.get('label'));
     let width = m.actualBoundingBoxRight + m.actualBoundingBoxLeft;
@@ -38,15 +42,14 @@ export function markBoundingBox(features, sl, font){
 }
 
 
-function markScale(nodes, higher, all, minResolution, maxResolution){
+function markScale(nodes, higher, all, minResolution, maxResolution, niter=20){
   let sx = d=>d.get('bbox').x;
   let sy = d=>d.get('bbox').y;
   let id = d=>d.get('index');
   let higherEqual = nodes.concat(higher);
-  let tree = d3.quadtree(higherEqual, sx, sy);
-  let rx = maxResolution * d3.max(all, d=>d.get('bbox').width);//depends on min zoom extent
-  let ry = maxResolution * d3.max(all, d=>d.get('bbox').height);
-
+  // let tree = d3.quadtree(higherEqual, sx, sy);
+  // let rx = maxResolution * d3.max(all, d=>d.get('bbox').width) * 2;//depends on min zoom extent
+  // let ry = maxResolution * d3.max(all, d=>d.get('bbox').height) * 2;
   const min0 = 1/maxResolution;
   const max0 = 1/minResolution;
   let current = new Set(higher.map(d=>d.get('index')));
@@ -54,8 +57,9 @@ function markScale(nodes, higher, all, minResolution, maxResolution){
     let bi = n.get('bbox');
     let [x,y] = [bi.x, bi.y];
 
-    let neighbors = searchQuadtree(tree, sx, sy, id, x-rx, x+rx, y-ry, y+ry);
-    neighbors = neighbors.filter(i=>current.has(i));
+    // let neighbors = searchQuadtree(tree, sx, sy, id, x-rx, x+rx, y-ry, y+ry);
+    // neighbors = neighbors.filter(i=>current.has(i));
+    let neighbors = current;
     let scale = min0;
     for(let j of neighbors){
       if(n.index === j){
@@ -65,7 +69,7 @@ function markScale(nodes, higher, all, minResolution, maxResolution){
       let max = max0;    
       let bj = all[j].get('bbox');
       let mid;// = (min+max)/2;
-      for(let k=0; k<20; k++){
+      for(let k=0; k<niter; k++){
         mid = (min+max)/2;
         if(isRectCollide2(bi, bj, mid)){
           [min,max] = [mid, max];
