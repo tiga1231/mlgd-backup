@@ -32,6 +32,20 @@ import clusterBoundaryData from './geojson/mingwei-topics-refined/im_cluster_bou
 import edgeyData from './geojson/mingwei-topics-refined/im_edges.geojson';
 import nodeData from './geojson/mingwei-topics-refined/im_nodes.geojson';
 
+// import clusterData from './geojson/mingwei-lastfm-refined/im_cluster.geojson';
+// import clusterBoundaryData from './geojson/mingwei-lastfm-refined/im_cluster_boundary.geojson';
+// import edgeyData from './geojson/mingwei-lastfm-refined/im_edges.geojson';
+// import nodeData from './geojson/mingwei-lastfm-refined/im_nodes.geojson';
+
+// import clusterData from './geojson/reyan-topics-refined/im_cluster.geojson';
+// import clusterBoundaryData from './geojson/reyan-topics-refined/im_cluster_boundary.geojson';
+// import edgeyData from './geojson/reyan-topics-refined/im_edges.geojson';
+// import nodeData from './geojson/reyan-topics-refined/im_nodes.geojson';
+
+// import clusterData from './geojson/reyan-lastfm-refined/im_cluster.geojson';
+// import clusterBoundaryData from './geojson/reyan-lastfm-refined/im_cluster_boundary.geojson';
+// import edgeyData from './geojson/reyan-lastfm-refined/im_edges.geojson';
+// import nodeData from './geojson/reyan-lastfm-refined/im_nodes.geojson';
 
 let clusterStyleFunction = function(feature, resolution) {
   let clusterStyle = new Style({
@@ -179,8 +193,8 @@ let createTextStyle = function(feature, resolution) {
 const FONT = 'arial';
 const minResolution = 1.194328566955879 
 const maxResolution = 405.7481131407050;
-const maxLevel = 20;
-let sl = d3.scaleLinear().domain([1, maxLevel]).range([20,12]);
+let maxLevel;
+let sl;// = d3.scaleLinear().domain([1, maxLevel]).range([20,12]);
 
 let clusterSource = new Vector({  url: clusterData,  format: new GeoJSON() });
 let clusterLayer = new VectorLayer({  source: clusterSource,  style: clusterStyleFunction });
@@ -204,9 +218,13 @@ let nodeSource = new Vector({
     xhr.onload = function() {
       if (xhr.status == 200) {
         let features = nodeSource.getFormat().readFeatures(xhr.responseText);
-        // features.forEach(d=>d.set('label', d.get('label').slice(0,16)));
+        maxLevel = d3.max(features, d=>+d.get('level'));
+        sl = d3.scaleLinear().domain([1, maxLevel]).range([20,12]);
+
+        features.forEach(d=>d.set('label', d.get('label').slice(0,16)));
         utils.markBoundingBox(features, sl, FONT);
-        utils.markNonOverlapResolution(features, d3.range(0,maxLevel+1,2), minResolution, maxResolution);
+        utils.markNonOverlapResolution(features, undefined, minResolution, maxResolution);
+        // utils.markNonOverlapResolution(features, d3.range(0,maxLevel+1,2), minResolution, maxResolution);
         nodeSource.addFeatures(features);
         console.log(features);
 

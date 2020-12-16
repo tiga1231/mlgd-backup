@@ -259,6 +259,7 @@ def process_node(xml,G):
     node["geometry"]["type"]="Point" #"Point"
     node["id"]="node" + node_g
     node["properties"]=G.nodes[node_g]
+    
     x=float(xml[2].attrib.pop('x'))  
     y=float(xml[2].attrib.pop('y'))
     nodecoordinate[G.nodes[node_g]["label"]]=[x,y]
@@ -297,8 +298,8 @@ nodes=""
 for child in root.findall('*[@id="graph0"]/*'):
     if "{http://www.w3.org/2000/svg}g"==child.tag:
         if child.attrib["class"]=="node":
-            nodeCount=nodeCount+1
-            nodes=nodes+ process_node(child,G)+ ", \n"
+            nodeCount += 1
+            nodes += process_node(child,G) + ", \n"
 
 
 for child in root.findall('*[@id="graph0"]/*'):
