@@ -5,3 +5,6 @@ visualization_system/.bin/
 *.DS_Store
 visualization_system/package-lock.json
 */funexp/*
+
+
+map_generator/.ipynb_checkpoints

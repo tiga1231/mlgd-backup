@@ -4,13 +4,15 @@ import numpy as np
 import json
 import networkx as nx
 import pygraphviz as pgv
+#direct_topics/impred_topics/impred_lastfm
 
-from natsort import natsorted
-from glob import glob
-import sys
-
+#layout_name="direct_topics"
+#layout_name="impred_topics"
+layout_name="impred_topics"
+layout_output_dir="impred_topics2"
+nodecoordinate={}
 def getLayer0(t1):
-    numberofnodes= min(30, len(t1))
+    numberofnodes=30
     paths=nx.shortest_path(t1)
     c=nx.get_node_attributes(t1,'weight')
     c={k:int(v) for k, v in c.items()}
@@ -19,104 +21,92 @@ def getLayer0(t1):
     for node in range(0,numberofnodes):
         selectednodes.append(s[node][0])
     H=nx.Graph()
-    for x in range(0, len(selectednodes)):
+    for x in  range(0, len(selectednodes)):
         for y in  range(x+1, len(selectednodes)):
-            p = paths[selectednodes[x]][selectednodes[y]]
+            p=paths[selectednodes[x]][selectednodes[y]]
             for i in range(0,len(p)-1):
                 H.add_node(p[i])
                 H.add_edge(p[i], p[i+1])
     print(len(H.nodes()))
     return H
 
-#direct_topics/impred_topics/impred_lastfm
-#layout_name="direct_topics"
-#layout_name="impred_topics"
-# layout_name="impred_topics"
+globaldatapath="../visualization_system/geojson/"
 
-nodecoordinate={}
-#input
-dir_in = sys.argv[1]#'../map_generator/mingwei-topics-refined'
-fn_map = f'{dir_in}/map.svg'
-fn_graph = f'{dir_in}/graph.dot'
-fn_layers = natsorted(glob(f'{dir_in}/layers/graph-*.dot'))
-# output
-dir_out = sys.argv[2] ##'../visualization_system/geojson/mingwei_topics_refined'
+if layout_name=="direct_topics":
+#for direct approach
+    mappath="../direct_approach_output/mapDirect_modularity.svg"
+    clusteroutput=globaldatapath + layout_output_dir+ "/cluster.geojson"
+    polylineoutput=globaldatapath + layout_output_dir+"/cluster_boundary.geojson"
+    edgesoutput=globaldatapath + layout_output_dir+"/edges.geojson"
+    nodesoutput=globaldatapath + layout_output_dir+"/nodes.geojson"
+    alledges=globaldatapath + layout_output_dir+"/alledges.geojson"
 
-print(fn_layers)
-#     
-# if layout_name=="direct_topics":
-# #for direct approach
-#     mappath="../direct_approach_output/mapDirect_modularity.svg"
-#     # clusteroutput=globaldatapath + layout_output_dir+ "/cluster.geojson"
-#     # polylineoutput=globaldatapath + layout_output_dir+"/cluster_boundary.geojson"
-#     # edgesoutput=globaldatapath + layout_output_dir+"/edges.geojson"
-#     # nodesoutput=globaldatapath + layout_output_dir+"/nodes.geojson"
-#     # alledges=globaldatapath + layout_output_dir+"/alledges.geojson"
-
-#     inputdir="../data/datasets/topics/set2/input/"
-#     input_graph="Topics_Graph.dot"
-#     layer_file_format="Topics_layer_{0}.dot"
+    inputdir="../data/datasets/topics/set2/input/"
+    input_graph="Topics_Graph.dot"
+    layer_file_format="Topics_layer_{0}.dot"
 
 
-# if layout_name=="impred_topics":
-#     mappath="../map_generator/impred/map.svg"
-#     # clusteroutput=globaldatapath + layout_output_dir+"/im_cluster.geojson"
-#     # polylineoutput=globaldatapath + layout_output_dir+"/im_cluster_boundary.geojson"
-#     # edgesoutput=globaldatapath + layout_output_dir+"/im_edges.geojson"
-#     # nodesoutput=globaldatapath + layout_output_dir+"/im_nodes.geojson"
-#     # alledges=globaldatapath + layout_output_dir+"/im_alledges.geojson"
+if layout_name=="impred_topics":
+    mappath="../map_generator/impred/map.svg"
+    clusteroutput=globaldatapath + layout_output_dir+"/im_cluster.geojson"
+    polylineoutput=globaldatapath + layout_output_dir+"/im_cluster_boundary.geojson"
+    edgesoutput=globaldatapath + layout_output_dir+"/im_edges.geojson"
+    nodesoutput=globaldatapath + layout_output_dir+"/im_nodes.geojson"
+    alledges=globaldatapath + layout_output_dir+"/im_alledges.geojson"
 
-#     inputdir="../data/datasets/topics/set2/input/"
-#     input_graph="Topics_Graph.dot"
-#     layer_file_format="Topics_layer_{0}.dot"
-#     layout_cordinate_path="../map_generator/impred/T8_for_map.dot"
+    inputdir="../data/datasets/topics/set2/input/"
+    input_graph="Topics_Graph.dot"
+    layer_file_format="Topics_layer_{0}.dot"
+    layout_cordinate_path="../map_generator/impred/T8_for_map.dot"
 
 
-# if layout_name=="impred_lastfm":
-#     mappath="../map_generator/maplastfm/map.svg"
-#     # clusteroutput=globaldatapath + layout_output_dir+"/im_cluster.geojson"
-#     # polylineoutput=globaldatapath + layout_output_dir+"/im_cluster_boundary.geojson"
-#     # edgesoutput=globaldatapath + layout_output_dir+"/im_edges.geojson"
-#     # nodesoutput=globaldatapath + layout_output_dir+"/im_nodes.geojson"
-#     # alledges=globaldatapath + layout_output_dir+"/im_alledges.geojson"
 
-#     inputdir="../ml_tree_extractor/outputs/"
-#     input_graph="output_graph.dot"
-#     layer_file_format="output_Layer_{0}.dot"
-#     layout_cordinate_path="../layout_generator/ZMLTpipeline/tmp_workspace/lastfm/final/output_Layer_8.dot"
 
-clusteroutput = f'{dir_out}/im_cluster.geojson'
-polylineoutput = f'{dir_out}/im_cluster_boundary.geojson'
-edgesoutput = f'{dir_out}/im_edges.geojson'
-nodesoutput = f'{dir_out}/im_nodes.geojson'
-alledges = f'{dir_out}/im_alledges.geojson'
 
-G = nx.Graph(pgv.AGraph(fn_graph))
+if layout_name=="impred_lastfm":
+    mappath="../map_generator/maplastfm/map.svg"
+    clusteroutput=globaldatapath + layout_output_dir+"/im_cluster.geojson"
+    polylineoutput=globaldatapath + layout_output_dir+"/im_cluster_boundary.geojson"
+    edgesoutput=globaldatapath + layout_output_dir+"/im_edges.geojson"
+    nodesoutput=globaldatapath + layout_output_dir+"/im_nodes.geojson"
+    alledges=globaldatapath + layout_output_dir+"/im_alledges.geojson"
 
-T = []
-L = len(fn_layers)
+    inputdir="../ml_tree_extractor/outputs/"
+    input_graph="output_graph.dot"
+    layer_file_format="output_Layer_{0}.dot"
+    layout_cordinate_path="../layout_generator/ZMLTpipeline/tmp_workspace/lastfm/final/output_Layer_8.dot"
+
+
+
+G=nx.Graph(pgv.AGraph(inputdir+input_graph))
+
+T=[]
+L=8
 #################adding layer0###############
-t1 = nx.Graph(pgv.AGraph(fn_layers[0]))
-t = getLayer0(t1)
+t1=nx.Graph(pgv.AGraph(inputdir+layer_file_format.format(1)))
+t=getLayer0(t1)
 T.append(t)
 ###########
-for i in range(1,L):
-    R = nx.Graph(pgv.AGraph(fn_layers[i]))
+for i in range(0,L):
+    R=nx.Graph(pgv.AGraph(inputdir+layer_file_format.format(i+1)))
     T.append(R)
 
 
 
 
 def process_alledges(G,alledges):
-    G=nx.Graph(pgv.AGraph(fn_graph))
-    G_cord=nx.Graph(pgv.AGraph(fn_graph))
+    global inputdir
+    global input_graph
+    global layout_cordinate_path
+    G=nx.Graph(pgv.AGraph(inputdir+ input_graph))
+    G_cord=nx.Graph(pgv.AGraph(layout_cordinate_path))
     id=0
     txt=""
     for e in G.edges():
         #import pdb; pdb.set_trace()
-        edge = n.copy()
+        edge=n.copy()
         edge["id"]= id
-        id = id +1
+        id =id +1
 
         edge["geometry"]["type"]="LineString"
         edge["properties"]=G.edges[e]
@@ -142,15 +132,15 @@ def process_alledges(G,alledges):
 
         points_array=[[x1-w/2,y1-h/2], [x2+w/2,y2-h/2] ]
         '''
-        a=nodecoordinate[G.nodes[n1]["label"]]
-        b=nodecoordinate[G.nodes[n2]["label"]]
+        a=nodecoordinate[G.node[n1]["label"]]
+        b=nodecoordinate[G.node[n2]["label"]]
         points_array=[a, b]
         #print(points_array)
         #print(e)
         edge["geometry"]["coordinates"]=points_array
 
         #import pdb; pdb.set_trace()
-#            edge["properties"]["level"]=str(max(  int(G.nodess[e1]['level']),  int(G.nodess[e2]['level'])))
+#            edge["properties"]["level"]=str(max(  int(G.nodes[e1]['level']),  int(G.nodes[e2]['level'])))
 
         txt=txt+ json.dumps(edge, indent=2)+ ", \n"
         #import pdb; pdb.set_trace()
@@ -181,7 +171,7 @@ def getLevel(x):
 #for direct approach
 
 
-root = ET.parse(fn_map).getroot()
+root = ET.parse(mappath).getroot()
 n={}
 n["type"]="Feature"
 n["geometry"]={}
@@ -238,11 +228,11 @@ def process_edge(xml,G):
     edge["properties"]=xml[1].attrib
     n1=xml[0].text.split("--")[0]
     n2=xml[0].text.split("--")[1]
-    a=nodecoordinate[G.nodes[n1]["label"]]
-    b=nodecoordinate[G.nodes[n2]["label"]]
+    a=nodecoordinate[G.node[n1]["label"]]
+    b=nodecoordinate[G.node[n2]["label"]]
     edge["properties"]["src"]=n1
     edge["properties"]["dest"]=n2
-    edge["properties"]["label"]=G.nodes[n1]["label"] + " -- " +  G.nodes[n2]["label"]
+    edge["properties"]["label"]=G.node[n1]["label"] + " -- " +  G.node[n2]["label"]
     #edge["properties"]["weight"]=G.edges[(n1,n2)]["weight"] 
     #todo: ignoring edge weights for lastfm data
     edge["geometry"]["coordinates"]=[a,b]
@@ -258,17 +248,16 @@ def process_node(xml,G):
     node=n.copy()
     node["geometry"]["type"]="Point" #"Point"
     node["id"]="node" + node_g
-    node["properties"]=G.nodes[node_g]
-    
+    node["properties"]=G.node[node_g]
     x=float(xml[2].attrib.pop('x'))  
     y=float(xml[2].attrib.pop('y'))
-    nodecoordinate[G.nodes[node_g]["label"]]=[x,y]
-    # h = float(node["properties"]["height"]) * 1.10 * 72  # inch to pixel conversion
-    # w = float(node["properties"]["width"]) * 1.10 * 72 # inch to pixel conversion
-    # points_array=[[x-w/2,y-h/2], [x+w/2,y-h/2], [x+w/2,y+h/2], [x-w/2,y+h/2], [x-w/2,y-h/2]]
+    nodecoordinate[G.node[node_g]["label"]]=[x,y]
+    h= float(node["properties"]["height"]) * 1.10 * 72  # inch to pixel conversion
+    w=float(node["properties"]["width"]) * 1.10 * 72 # inch to pixel conversion
+    points_array=[[x-w/2,y-h/2], [x+w/2,y-h/2], [x+w/2,y+h/2], [x-w/2,y+h/2], [x-w/2,y-h/2]]
 
-    # node["properties"]["height"]=h
-    # node["properties"]["width"]= w
+    node["properties"]["height"]=h
+    node["properties"]["width"]= w
 
     node["geometry"]["coordinates"]= [x,y] #//[x,y]
     node["properties"]["level"]=getLevel(node_g)
@@ -298,8 +287,8 @@ nodes=""
 for child in root.findall('*[@id="graph0"]/*'):
     if "{http://www.w3.org/2000/svg}g"==child.tag:
         if child.attrib["class"]=="node":
-            nodeCount += 1
-            nodes += process_node(child,G) + ", \n"
+            nodeCount=nodeCount+1
+            nodes=nodes+ process_node(child,G)+ ", \n"
 
 
 for child in root.findall('*[@id="graph0"]/*'):
