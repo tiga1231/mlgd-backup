@@ -224,12 +224,14 @@ function initSearchBar(map, features){
   .append('div')
   .style('position', 'absolute')
   .style('top', '1em')
-  .style('right', '2em');
+  .style('right', '2em')
+  .style('width', '12em');
 
   let bar = barDiv
   .append('input')
   .attr('type', 'text')
-  .attr('placeholder', 'Search..');
+  .attr('placeholder', 'Search..')
+  .style('width', '12em');
   let barWidth = `${bar.node().offsetWidth}px`;
 
   let icon = barDiv

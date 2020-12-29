@@ -15,7 +15,8 @@ li{
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   cursor: pointer;
 }
 
