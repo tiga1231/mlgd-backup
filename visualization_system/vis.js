@@ -205,10 +205,11 @@ function createTextStyle(feature, resolution, fullText=false) {
 };
 
 
-function focus(map, nodeFeature){
+function focus(map, nodeFeature, maxResolution){
   let center = nodeFeature.values_.geometry.flatCoordinates;
   let resolution = nodeFeature.get('resolution') - 1;
-  console.log(map.getView().getResolution(), resolution);
+  resolution = Math.min(maxResolution, resolution);
+  console.log(resolution);
   // let zoom = map.getView().getZoom() + 1;
   map.getView().animate({
     resolution,
@@ -247,6 +248,7 @@ function initSearchBar(map, features){
   .style('overflow', 'auto')
   .style('list-style-type', 'none');
 
+  let maxResolution = d3.max(features, d=>d.get('resolution'));
   bar.node().addEventListener('keyup', (e)=>{
     let query = bar.node().value.toLowerCase();
     if(query.length == 0){
@@ -262,7 +264,7 @@ function initSearchBar(map, features){
       .text(d=>d.get('label-full'));
       items.on('click', function(){
         searched = d3.select(this).datum();
-        focus(map, searched);
+        focus(map, searched, maxResolution/20);
       })
     }
   });
