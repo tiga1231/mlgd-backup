@@ -21,6 +21,9 @@ import {  defaults as defaultControls,  OverviewMap,  LayerSwitcher, FullScreen}
 import * as d3 from 'd3';
 import * as utils from './utils';
 
+import './style.css';
+
+
 //data
 // import clusterData from './geojson/mingwei_topics/im_cluster.geojson';
 // import clusterBoundaryData from './geojson/mingwei_topics/im_cluster_boundary.geojson';
@@ -55,7 +58,7 @@ const FONT = 'arial';
 const [maxFont, minFont] = [20,12];
 //globals
 let sl;
-
+let searched;
 
 function clusterStyleFunction(feature, resolution) {
   let clusterStyle = new Style({
@@ -117,28 +120,28 @@ function nodeStyleFunction(feature, resolution) {
       //   fill: new Fill({
       //     color: '#aaa'
       //   }),
-        // stroke: new Stroke({
-        //   color: '#3399CC',
-        //   width: 0
-        // }),
-        // radius: sl(+feature.get('level'))/2
+      //   stroke: new Stroke({
+      //     color: '#3399CC',
+      //     width: 0
+      //   }),
+      //   radius: sl(+feature.get('level'))/2
       // }),
     });
   }
 };
 
 
-function selectStyleFunction(feature, resolution) {
-  let nodestyle = new Style({
-    stroke: new Stroke({
-      color: 'rgba(0,0,0,0.5)',
-      width: 1
-    }),
-    fill: new Fill({
-      color: 'rgba(255,255,255,0.5)'
-    })
-  });
-};
+// function selectStyleFunction(feature, resolution) {
+//   let nodestyle = new Style({
+//     stroke: new Stroke({
+//       color: 'rgba(0,0,0,0.5)',
+//       width: 1
+//     }),
+//     fill: new Fill({
+//       color: 'rgba(255,255,255,0.5)'
+//     })
+//   });
+// };
 
 
 
@@ -184,12 +187,12 @@ function getVisible(feature,resolution){
 function createTextStyle(feature, resolution, fullText=false) {
   // let remap = 2 + (8-level)*1.5/7;
   // let fsize =  5 * remap;
-
+  let fontsize =  sl(+feature.get('level'));
   let nodetext = new Text({
-    font: Math.round(sl(+feature.get('level'))) + `px ${FONT}`,  
+    font: `${fontsize}px ${FONT}`,  
     text: fullText ? feature.get('label-full') : feature.get('label'),
     fill: new Fill({
-      color: 'rgba(72,79,90,1)'
+      color: searched==feature ? 'rgba(72,79,255,1)':'rgba(72,79,90,1)'
     }),
     stroke: new Stroke({
       color: 'rgba(250,250,250,1)',
@@ -202,8 +205,66 @@ function createTextStyle(feature, resolution, fullText=false) {
 };
 
 
+function focus(map, nodeFeature){
+  let center = nodeFeature.values_.geometry.flatCoordinates;
+  let resolution = nodeFeature.get('resolution') - 1;
+  console.log(map.getView().getResolution(), resolution);
+  // let zoom = map.getView().getZoom() + 1;
+  map.getView().animate({
+    resolution,
+    center,
+    duration: 750
+  });
+}
 
 
+function initSearchBar(map, features){
+  // <input type="text" placeholder="Search..">
+  let barDiv = d3.select('body')
+  .append('div')
+  .style('position', 'absolute')
+  .style('top', '1em')
+  .style('right', '2em');
+
+  let bar = barDiv
+  .append('input')
+  .attr('type', 'text')
+  .attr('placeholder', 'Search..');
+  let barWidth = `${bar.node().offsetWidth}px`;
+
+  let icon = barDiv
+  .append('i')
+  .attr('class', 'fa fa-search')
+  .style('margin-left', '-1.3em');
+
+  let list = barDiv
+  .append('ul')
+  .style('padding', '0')
+  .style('max-height', '60vh')
+  .style('max-width', barWidth)
+  .style('overflow', 'auto')
+  .style('list-style-type', 'none');
+
+  bar.node().addEventListener('keyup', (e)=>{
+    let query = bar.node().value.toLowerCase();
+    if(query.length == 0){
+      searched = undefined;
+      list.selectAll('li').remove();
+    }else{
+      let hits = features.filter(d=>d.get('label-full').toLowerCase().includes(query));
+      list.selectAll('li').remove();
+      let items = list.selectAll('li')
+      .data(hits)
+      .enter()
+      .append('li')
+      .text(d=>d.get('label-full'));
+      items.on('click', function(){
+        searched = d3.select(this).datum();
+        focus(map, searched);
+      })
+    }
+  });
+}
 
 
 
@@ -218,12 +279,13 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
   let edgeSource = new Vector({  url: edgeData,  format: new GeoJSON() });
   let edgesLayer = new VectorLayer({  source: edgeSource,  style: edgeStyleFunction});
 
+  let features;
   // let nodeSource = new Vector({  url: nodeData,  format: new GeoJSON()});
   let nodeSource = new Vector({
     format: new GeoJSON(),
     loader: function(extent, resolution, projection, callee){
-      var url = nodeData;
-      var xhr = new XMLHttpRequest();
+      let url = nodeData;
+      let xhr = new XMLHttpRequest();
       xhr.open('GET', url);
       xhr.onerror = function() {
         nodeSource.removeLoadedExtent(extent);
@@ -233,7 +295,7 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
         const maxResolution = 405.7481131407050;
 
         if (xhr.status == 200) {
-          let features = nodeSource.getFormat().readFeatures(xhr.responseText);
+          features = nodeSource.getFormat().readFeatures(xhr.responseText);
           let maxLevel = d3.max(features, d=>+d.get('level'));
           sl = d3.scaleLinear().domain([1, maxLevel]).range([maxFont, minFont]);
 
@@ -245,12 +307,9 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
           });
           utils.markBoundingBox(features, sl, FONT);
           utils.markNonOverlapResolution(features, undefined, minResolution, maxResolution);
-          // utils.markNonOverlapResolution(features, d3.range(0,maxLevel+1,2), minResolution, maxResolution);
           nodeSource.addFeatures(features);
-          console.log(features);
+          // console.log(features);
 
-          let debug = new Set(['information visualization', 'computational geometry']);
-          console.log(features.filter(d=>debug.has(d.get('label'))));
         } else {
           onError();
         }
@@ -276,8 +335,18 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
     })
   });
 
+  let intervalId = setInterval(()=>{
+    if(features !== undefined){
+      initSearchBar(map, features);
+      clearInterval(intervalId);
+    }
+  }, 100);
+  
+
+
   global.map = map;
-  console.log(map.getView().minResolution_, map.getView().maxResolution_);
+  
+
   let popup = new Overlay({
     element: document.getElementById('popup')
   });
@@ -285,8 +354,6 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
 
   global.popup = popup;
 
-
-  
 
   let nodeSelectPointerMove = new Select({
     condition: pointerMove,
@@ -326,8 +393,10 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
       let label = feature.get('label-full');
       let level = feature.get('level');
       $(element)[0].title = label;
-      let content = `${label}<br>
-      Level: ${level}`; 
+      let content = `
+        ${label}<br>
+        Level: ${level}
+      `; 
 
       $(element).popover('destroy');
       popup.setPosition(evt.coordinate);
@@ -340,5 +409,7 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
       $(element).popover('show');
     }
   });
+  
+
 }
 
