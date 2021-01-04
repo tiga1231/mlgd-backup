@@ -1,7 +1,7 @@
 strict graph "" {
 	node [label="\N"];
 	0	[id=0,
-		label="Me First and the",
+		label="Me First and the Gimme Gimmes",
 		level=1,
 		pos="871.6603685406284,1165.0700368905025",
 		weight=0];
@@ -12,7 +12,7 @@ strict graph "" {
 		weight=0];
 	0 -- 10	[level=1];
 	12	[id=12,
-		label="No Use for a Nam",
+		label="No Use for a Name",
 		level=1,
 		pos="1493.0244871881991,1535.6707999452242",
 		weight=0];
@@ -46,7 +46,7 @@ strict graph "" {
 		weight=0];
 	1542 -- 1700	[level=2];
 	1439	[id=1439,
-		label="Frankie Goes to ",
+		label="Frankie Goes to Hollywood",
 		level=2,
 		pos="5384.8956226854125,11443.933936730076",
 		weight=0];
@@ -63,7 +63,7 @@ strict graph "" {
 		pos="-8612.197990265273,-9967.936667635622",
 		weight=0];
 	1971	[id=1971,
-		label="Noah and the Wha",
+		label="Noah and the Whale",
 		level=5,
 		pos="-8283.596957604994,-9556.65879874166",
 		weight=0];
@@ -75,7 +75,7 @@ strict graph "" {
 		weight=0];
 	12 -- 21	[level=1];
 	1550	[id=1550,
-		label="Electric Light O",
+		label="Electric Light Orchestra",
 		level=4,
 		pos="4034.2734222985073,12309.549914888134",
 		weight=0];
@@ -142,13 +142,13 @@ strict graph "" {
 		weight=0];
 	2576 -- 2543	[level=5];
 	29	[id=29,
-		label="Red Hot Chili Pe",
+		label="Red Hot Chili Peppers",
 		level=1,
 		pos="747.0267244969809,-772.4268893604913",
 		weight=0];
 	20 -- 29	[level=1];
 	37	[id=37,
-		label="Rage Against the",
+		label="Rage Against the Machine",
 		level=5,
 		pos="903.2990003426119,-340.3501800166652",
 		weight=0];
@@ -177,7 +177,7 @@ strict graph "" {
 		weight=0];
 	533 -- 644	[level=2];
 	418	[id=418,
-		label="Sophie Ellis-Bex",
+		label="Sophie Ellis-Bextor",
 		level=2,
 		pos="-412.7611061390626,-3859.926300874939",
 		weight=0];
@@ -222,13 +222,13 @@ strict graph "" {
 		weight=0];
 	1532 -- 1683	[level=4];
 	1427	[id=1427,
-		label="Fine Young Canni",
+		label="Fine Young Cannibals",
 		level=3,
 		pos="5869.062159945884,11087.48866798882",
 		weight=0];
 	1532 -- 1427	[level=4];
 	60	[id=60,
-		label="The White Stripe",
+		label="The White Stripes",
 		level=1,
 		pos="363.94287529299504,-1255.659786977483",
 		weight=0];
@@ -245,13 +245,13 @@ strict graph "" {
 		weight=0];
 	1057 -- 1141	[level=2];
 	976	[id=976,
-		label="John Mayall & Th",
+		label="John Mayall & The Bluesbreakers",
 		level=2,
 		pos="4893.941174421578,8948.182042930788",
 		weight=0];
 	1057 -- 976	[level=2];
 	1058	[id=1058,
-		label="The Jimi Hendrix",
+		label="The Jimi Hendrix Experience",
 		level=3,
 		pos="4349.63745436725,9734.076205185742",
 		weight=0];
@@ -296,7 +296,7 @@ strict graph "" {
 		weight=0];
 	1533 -- 1436	[level=5];
 	64	[id=64,
-		label="Queens of the St",
+		label="Queens of the Stone Age",
 		level=5,
 		pos="1075.604119055613,-417.60585506613955",
 		weight=0];
@@ -336,12 +336,12 @@ strict graph "" {
 		weight=0];
 	1064 -- 986	[level=5];
 	2044	[id=2044,
-		label="The Righteous Br",
+		label="The Righteous Brothers",
 		level=5,
 		pos="3517.634443557547,14515.361589153652",
 		weight=0];
 	2139	[id=2139,
-		label="The Everly Broth",
+		label="The Everly Brothers",
 		level=5,
 		pos="3055.5865831557326,14729.998244619903",
 		weight=0];
@@ -364,7 +364,7 @@ strict graph "" {
 		pos="4914.684149171409,-977.7546467419885",
 		weight=0];
 	647	[id=647,
-		label="A Silver Mt. Zio",
+		label="A Silver Mt. Zion",
 		level=5,
 		pos="5447.807234290906,-1118.7711827443327",
 		weight=0];
@@ -409,7 +409,7 @@ strict graph "" {
 		pos="-5204.871646911074,-5848.00836163728",
 		weight=0];
 	1203	[id=1203,
-		label="The Chemical Bro",
+		label="The Chemical Brothers",
 		level=5,
 		pos="-5811.59481050407,-5627.3651082131555",
 		weight=0];
@@ -504,7 +504,7 @@ strict graph "" {
 		weight=0];
 	2120 -- 2037	[level=3];
 	588	[id=588,
-		label="Dave Matthews & ",
+		label="Dave Matthews & Tim Reynolds",
 		level=1,
 		pos="3696.2663105973793,6462.2943769440635",
 		weight=0];
@@ -521,7 +521,7 @@ strict graph "" {
 		weight=0];
 	588 -- 472	[level=1];
 	1615	[id=1615,
-		label="Architecture in ",
+		label="Architecture in Helsinki",
 		level=5,
 		pos="-7195.698878269156,-7838.903500673167",
 		weight=0];
@@ -532,13 +532,13 @@ strict graph "" {
 		weight=0];
 	1615 -- 1716	[level=5];
 	1468	[id=1468,
-		label="The Apples in St",
+		label="The Apples in Stereo",
 		level=2,
 		pos="-6668.152886789873,-7892.377344334136",
 		weight=0];
 	1615 -- 1468	[level=5];
 	1619	[id=1619,
-		label="The Polyphonic S",
+		label="The Polyphonic Spree",
 		level=2,
 		pos="-7212.052569149292,-8033.214337101775",
 		weight=0];
@@ -549,7 +549,7 @@ strict graph "" {
 		weight=0];
 	1619 -- 1718	[level=2];
 	1719	[id=1719,
-		label="The Magic Number",
+		label="The Magic Numbers",
 		level=4,
 		pos="-7691.810980971879,-8343.502995615376",
 		weight=0];
@@ -568,12 +568,12 @@ strict graph "" {
 		weight=0];
 	85 -- 172	[level=1];
 	1626	[id=1626,
-		label="Her Space Holida",
+		label="Her Space Holiday",
 		level=5,
 		pos="-5586.701256112588,-8560.210239938102",
 		weight=0];
 	1471	[id=1471,
-		label="Casiotone for th",
+		label="Casiotone for the Painfully Alone",
 		level=5,
 		pos="-5443.418024201564,-8052.10492294103",
 		weight=0];
@@ -648,7 +648,7 @@ strict graph "" {
 		weight=0];
 	622 -- 701	[level=1];
 	511	[id=511,
-		label="Kruder & Dorfmei",
+		label="Kruder & Dorfmeister",
 		level=1,
 		pos="-1787.3093694078516,-4140.3493893567",
 		weight=0];
@@ -712,7 +712,7 @@ strict graph "" {
 		weight=0];
 	644 -- 754	[level=5];
 	757	[id=757,
-		label="The Pussycat Dol",
+		label="The Pussycat Dolls",
 		level=2,
 		pos="405.6334625386804,-5235.048841518423",
 		weight=0];
@@ -736,12 +736,12 @@ strict graph "" {
 		weight=0];
 	135 -- 198	[level=5];
 	1678	[id=1678,
-		label="Adam and the Ant",
+		label="Adam and the Ants",
 		level=4,
 		pos="6840.870040010514,11395.152844815177",
 		weight=0];
 	1793	[id=1793,
-		label="The Boomtown Rat",
+		label="The Boomtown Rats",
 		level=5,
 		pos="7346.9575090277485,11573.082055926003",
 		weight=0];
@@ -765,7 +765,7 @@ strict graph "" {
 		weight=0];
 	149 -- 199	[level=4];
 	805	[id=805,
-		label="B.B. King & Eric",
+		label="B.B. King & Eric Clapton",
 		level=1,
 		pos="4281.171418716022,7864.623465267282",
 		weight=0];
@@ -819,7 +819,7 @@ strict graph "" {
 		weight=0];
 	1719 -- 1861	[level=5];
 	829	[id=829,
-		label="The Dust Brother",
+		label="The Dust Brothers",
 		level=1,
 		pos="-3095.3138704651024,-5097.387056868162",
 		weight=0];
@@ -921,7 +921,7 @@ strict graph "" {
 		weight=0];
 	1243 -- 1331	[level=2];
 	313	[id=313,
-		label="Toad the Wet Spr",
+		label="Toad the Wet Sprocket",
 		level=5,
 		pos="2633.018126773832,4406.032742176008",
 		weight=0];
@@ -939,7 +939,7 @@ strict graph "" {
 		weight=0];
 	1245 -- 1334	[level=5];
 	1344	[id=1344,
-		label="The Doobie Broth",
+		label="The Doobie Brothers",
 		level=3,
 		pos="4315.0475029114305,11236.390448344964",
 		weight=0];
@@ -951,7 +951,7 @@ strict graph "" {
 		weight=0];
 	1761 -- 1892	[level=5];
 	328	[id=328,
-		label="Silversun Pickup",
+		label="Silversun Pickups",
 		level=5,
 		pos="-960.2430312653106,-29.70056852335815",
 		weight=0];
@@ -1005,7 +1005,7 @@ strict graph "" {
 		weight=0];
 	1793 -- 1902	[level=5];
 	1385	[id=1385,
-		label="Neutral Milk Hot",
+		label="Neutral Milk Hotel",
 		level=2,
 		pos="-6192.23089417391,-7509.312727391135",
 		weight=0];
@@ -1093,7 +1093,7 @@ strict graph "" {
 		weight=0];
 	2365 -- 2423	[level=4];
 	391	[id=391,
-		label="Tristan Prettyma",
+		label="Tristan Prettyman",
 		level=1,
 		pos="2382.9599947075285,5580.840923734052",
 		weight=0];
@@ -1187,7 +1187,7 @@ strict graph "" {
 		weight=0];
 	2469 -- 2492	[level=5];
 	2512	[id=2512,
-		label="Panic at the Dis",
+		label="Panic at the Disco",
 		level=5,
 		pos="-11587.125043338983,-11961.935655403164",
 		weight=0];
@@ -1199,7 +1199,7 @@ strict graph "" {
 		weight=0];
 	2492 -- 2527	[level=5];
 	2541	[id=2541,
-		label="Cute Is What We ",
+		label="Cute Is What We Aim For",
 		level=5,
 		pos="-11546.444949715904,-12405.729673979156",
 		weight=0];

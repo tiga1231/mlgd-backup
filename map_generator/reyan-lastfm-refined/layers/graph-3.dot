@@ -1,7 +1,7 @@
 strict graph "" {
 	node [label="\N"];
 	0	[id=0,
-		label="Me First and the",
+		label="Me First and the Gimme Gimmes",
 		level=1,
 		pos="871.6603685406284,1165.0700368905025",
 		weight=0];
@@ -12,7 +12,7 @@ strict graph "" {
 		weight=0];
 	0 -- 10	[level=1];
 	12	[id=12,
-		label="No Use for a Nam",
+		label="No Use for a Name",
 		level=1,
 		pos="1493.0244871881991,1535.6707999452242",
 		weight=0];
@@ -46,7 +46,7 @@ strict graph "" {
 		weight=0];
 	644 -- 533	[level=2];
 	757	[id=757,
-		label="The Pussycat Dol",
+		label="The Pussycat Dolls",
 		level=2,
 		pos="405.6334625386804,-5235.048841518423",
 		weight=0];
@@ -63,7 +63,7 @@ strict graph "" {
 		weight=0];
 	1285 -- 1220	[level=2];
 	1385	[id=1385,
-		label="Neutral Milk Hot",
+		label="Neutral Milk Hotel",
 		level=2,
 		pos="-6192.23089417391,-7509.312727391135",
 		weight=0];
@@ -74,7 +74,7 @@ strict graph "" {
 		pos="5385.719651591096,12116.740666508804",
 		weight=0];
 	1439	[id=1439,
-		label="Frankie Goes to ",
+		label="Frankie Goes to Hollywood",
 		level=2,
 		pos="5384.8956226854125,11443.933936730076",
 		weight=0];
@@ -86,7 +86,7 @@ strict graph "" {
 		weight=0];
 	1542 -- 1700	[level=2];
 	391	[id=391,
-		label="Tristan Prettyma",
+		label="Tristan Prettyman",
 		level=1,
 		pos="2382.9599947075285,5580.840923734052",
 		weight=0];
@@ -126,7 +126,7 @@ strict graph "" {
 		weight=0];
 	10 -- 20	[level=1];
 	511	[id=511,
-		label="Kruder & Dorfmei",
+		label="Kruder & Dorfmeister",
 		level=1,
 		pos="-1787.3093694078516,-4140.3493893567",
 		weight=0];
@@ -160,7 +160,7 @@ strict graph "" {
 		weight=0];
 	910 -- 1021	[level=2];
 	829	[id=829,
-		label="The Dust Brother",
+		label="The Dust Brothers",
 		level=1,
 		pos="-3095.3138704651024,-5097.387056868162",
 		weight=0];
@@ -172,7 +172,7 @@ strict graph "" {
 		weight=0];
 	1021 -- 1083	[level=2];
 	1427	[id=1427,
-		label="Fine Young Canni",
+		label="Fine Young Cannibals",
 		level=3,
 		pos="5869.062159945884,11087.48866798882",
 		weight=0];
@@ -183,7 +183,7 @@ strict graph "" {
 		weight=0];
 	1427 -- 1331	[level=3];
 	29	[id=29,
-		label="Red Hot Chili Pe",
+		label="Red Hot Chili Peppers",
 		level=1,
 		pos="747.0267244969809,-772.4268893604913",
 		weight=0];
@@ -212,7 +212,7 @@ strict graph "" {
 		weight=0];
 	149 -- 68	[level=3];
 	418	[id=418,
-		label="Sophie Ellis-Bex",
+		label="Sophie Ellis-Bextor",
 		level=2,
 		pos="-412.7611061390626,-3859.926300874939",
 		weight=0];
@@ -247,19 +247,19 @@ strict graph "" {
 		pos="4120.760784922846,7044.037967548748",
 		weight=0];
 	805	[id=805,
-		label="B.B. King & Eric",
+		label="B.B. King & Eric Clapton",
 		level=1,
 		pos="4281.171418716022,7864.623465267282",
 		weight=0];
 	667 -- 805	[level=1];
 	588	[id=588,
-		label="Dave Matthews & ",
+		label="Dave Matthews & Tim Reynolds",
 		level=1,
 		pos="3696.2663105973793,6462.2943769440635",
 		weight=0];
 	667 -- 588	[level=1];
 	60	[id=60,
-		label="The White Stripe",
+		label="The White Stripes",
 		level=1,
 		pos="363.94287529299504,-1255.659786977483",
 		weight=0];
@@ -281,7 +281,7 @@ strict graph "" {
 		pos="4150.1128523027655,10320.379544181797",
 		weight=0];
 	1058	[id=1058,
-		label="The Jimi Hendrix",
+		label="The Jimi Hendrix Experience",
 		level=3,
 		pos="4349.63745436725,9734.076205185742",
 		weight=0];
@@ -299,7 +299,7 @@ strict graph "" {
 		pos="5335.820253849166,9379.68311616035",
 		weight=0];
 	976	[id=976,
-		label="John Mayall & Th",
+		label="John Mayall & The Bluesbreakers",
 		level=2,
 		pos="4893.941174421578,8948.182042930788",
 		weight=0];
@@ -330,7 +330,7 @@ strict graph "" {
 		pos="4078.188567958316,11731.521310082731",
 		weight=0];
 	1344	[id=1344,
-		label="The Doobie Broth",
+		label="The Doobie Brothers",
 		level=3,
 		pos="4315.0475029114305,11236.390448344964",
 		weight=0];
@@ -389,7 +389,7 @@ strict graph "" {
 		weight=0];
 	1718 -- 1860	[level=3];
 	1619	[id=1619,
-		label="The Polyphonic S",
+		label="The Polyphonic Spree",
 		level=2,
 		pos="-7212.052569149292,-8033.214337101775",
 		weight=0];
@@ -435,7 +435,7 @@ strict graph "" {
 	961 -- 862	[level=3];
 	1344 -- 1245	[level=3];
 	1468	[id=1468,
-		label="The Apples in St",
+		label="The Apples in Stereo",
 		level=2,
 		pos="-6668.152886789873,-7892.377344334136",
 		weight=0];

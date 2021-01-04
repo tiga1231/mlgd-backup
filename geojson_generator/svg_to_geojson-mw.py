@@ -25,7 +25,6 @@ def getLayer0(t1):
             for i in range(0,len(p)-1):
                 H.add_node(p[i])
                 H.add_edge(p[i], p[i+1])
-    print(len(H.nodes()))
     return H
 
 #direct_topics/impred_topics/impred_lastfm
@@ -92,6 +91,7 @@ nodesoutput = f'{dir_out}/im_nodes.geojson'
 alledges = f'{dir_out}/im_alledges.geojson'
 
 G = nx.Graph(pgv.AGraph(fn_graph))
+print('graph edges:', len(G.edges))
 
 T = []
 L = len(fn_layers)
@@ -103,12 +103,13 @@ T.append(t)
 for i in range(1,L):
     R = nx.Graph(pgv.AGraph(fn_layers[i]))
     T.append(R)
-
+print('levels:', len(T))
 
 
 
 def process_alledges(G,alledges):
     G=nx.Graph(pgv.AGraph(fn_graph))
+
     G_cord=nx.Graph(pgv.AGraph(fn_graph))
     id=0
     txt=""
@@ -161,14 +162,14 @@ def process_alledges(G,alledges):
 
 
 
-def getLayer(x):
-    for i in range(0,L+1): #considering added layer0
-        if x in T[i].edges():
-            return i+1
+# def getLayer(x):
+#     for i in range(0,L+1): #considering added layer0
+#         if x in T[i].edges():
+#             return i+1
 
 
 def getLevel(x):
-    for i in range(0,L+1): #considering added layer0
+    for i in range(0,len(T)): #considering added layer0
         if x in T[i].nodes():
             return i+1
 
@@ -246,7 +247,8 @@ def process_edge(xml,G):
     #edge["properties"]["weight"]=G.edges[(n1,n2)]["weight"] 
     #todo: ignoring edge weights for lastfm data
     edge["geometry"]["coordinates"]=[a,b]
-    edge["properties"]["level"]=getLayer((n1,n2))
+    # edge["properties"]["level"]=getLevel((n1,n2))
+    edge["properties"]["level"]=G.edges[n1,n2]["level"]
     return json.dumps(edge, indent=2)
 
 
@@ -271,7 +273,8 @@ def process_node(xml,G):
     # node["properties"]["width"]= w
 
     node["geometry"]["coordinates"]= [x,y] #//[x,y]
-    node["properties"]["level"]=getLevel(node_g)
+    node["properties"]["level"]=G.nodes[node_g]['level']
+    # node["properties"]["level"]=getLevel(node_g)
     return json.dumps(node, indent=2)
 
 
@@ -316,7 +319,9 @@ for child in root.findall('*[@id="graph0"]/*'):
 
 process_alledges(G,alledges)
 
-print(polygonCount,polylindCount,nodeCount)
+print('polygons:', polygonCount, 
+    'polylines:', polylindCount, 
+    'nodes:', nodeCount)
 
 write_to_file(polygons,clusteroutput)
 write_to_file(polylines,polylineoutput)

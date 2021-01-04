@@ -60,6 +60,7 @@ const [maxEdgeWidth, minEdgeWidth] = [3,0.5];
 //globals
 let sl, se;
 let searched;
+let graphMinResolution;
 
 function clusterStyleFunction(feature, resolution) {
   let clusterStyle = new Style({
@@ -90,15 +91,29 @@ function clusterBoundaryStyleFunction(feature, resolution) {
 
 
 function edgeStyleFunction(feature, resolution) {
-  let l = +feature.get('level');
-  // let c = feature.get('stroke');
-  let edgeStyle = new Style({
-    stroke: new Stroke({
-      color: '#aaa',//c,
-      width: se(l),
-    })
-  });
-  return edgeStyle;
+  if (feature.get('level') !== undefined){//edges of the tree
+    return new Style({
+      stroke: new Stroke({
+        color: '#aaa',
+        width: se(+feature.get('level')),
+      })
+    });
+  }else{//other edges of the graph
+    // if(true){
+    if(resolution < graphMinResolution){
+      return new Style({
+        stroke: new Stroke({
+          // color: '#aaaaff20',
+          color: '#aaaaff77',
+          width: 1,
+          // lineDash: [1, 1],
+        })
+      });
+    }else{
+      return new Style({});
+    }
+  }
+
 };
 
 
@@ -169,9 +184,9 @@ function selectStyleFunctionForEdge(feature, resolution) {
   let style=edgeStyleFunction(feature, resolution);
   let stk=  style.getStroke()
   if (stk){
-  stk.width_ = stk.width_ + 2
-  stk.color_='red'
-  style.setStroke(stk);
+    stk.width_ = stk.width_ + 2;
+    stk.color_='red';
+    style.setStroke(stk);
   }
   //console.log(stk)
   return style;
@@ -180,7 +195,7 @@ function selectStyleFunctionForEdge(feature, resolution) {
 
 
 
-function getVisible(feature,resolution){
+function getVisible(feature, resolution){
   return feature.get('resolution') > resolution;
 };
 
@@ -313,6 +328,8 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
           });
           utils.markBoundingBox(features, sl, FONT);
           utils.markNonOverlapResolution(features, undefined, minResolution, maxResolution);
+          graphMinResolution = d3.min(features, d=>d.get('resolution'));
+          graphMinResolution = Math.max(graphMinResolution, map.getView().minResolution_);
           nodeSource.addFeatures(features);
           // console.log(features);
 
