@@ -56,8 +56,9 @@ import './style.css';
 //consts
 const FONT = 'arial';
 const [maxFont, minFont] = [20,12];
+const [maxEdgeWidth, minEdgeWidth] = [3,0.5];
 //globals
-let sl;
+let sl, se;
 let searched;
 
 function clusterStyleFunction(feature, resolution) {
@@ -94,7 +95,7 @@ function edgeStyleFunction(feature, resolution) {
   let edgeStyle = new Style({
     stroke: new Stroke({
       color: '#aaa',//c,
-      width: 0.3*sl(l)/5,
+      width: se(l),
     })
   });
   return edgeStyle;
@@ -302,6 +303,7 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
           features = nodeSource.getFormat().readFeatures(xhr.responseText);
           let maxLevel = d3.max(features, d=>+d.get('level'));
           sl = d3.scaleLinear().domain([1, maxLevel]).range([maxFont, minFont]);
+          se = d3.scaleLinear().domain([1, maxLevel]).range([maxEdgeWidth, minEdgeWidth]);
 
           let trunc = 16;
           features.forEach(d=>{
