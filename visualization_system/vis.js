@@ -174,7 +174,7 @@ function selectStyleFunctionForNode(feature, resolution) {
   // }
   // return style;
   return new Style({
-    text: createTextStyle(feature, resolution, true)
+    text: createTextStyle(feature, resolution, true, true)
   });
 
 };
@@ -200,15 +200,13 @@ function getVisible(feature, resolution){
 };
 
 
-function createTextStyle(feature, resolution, fullText=false) {
-  // let remap = 2 + (8-level)*1.5/7;
-  // let fsize =  5 * remap;
-  let fontsize =  sl(+feature.get('level'));
-  let nodetext = new Text({
+function createTextStyle(feature, resolution, fullText=false, select=false) {
+  let fontsize = sl(+feature.get('level'));
+  return new Text({
     font: `${fontsize}px ${FONT}`,  
     text: fullText ? feature.get('label-full') : feature.get('label'),
     fill: new Fill({
-      color: searched==feature ? 'rgba(72,79,255,1)':'rgba(72,79,90,1)'
+      color: (searched==feature || select) ? 'rgba(72,79,255,1)':'rgba(72,79,90,1)'
     }),
     stroke: new Stroke({
       color: 'rgba(250,250,250,1)',
@@ -217,7 +215,6 @@ function createTextStyle(feature, resolution, fullText=false) {
     offsetX: 0,
     offsetY: 0,//boxheight/2,
   });
-  return nodetext;
 };
 
 
@@ -417,8 +414,7 @@ export function draw(clusterData, clusterBoundaryData, edgeData, nodeData){
       let level = feature.get('level');
       $(element)[0].title = label;
       let content = `
-        ${label}<br>
-        Level: ${level}
+        Level: ${level}<br>
       `; 
 
       $(element).popover('destroy');
